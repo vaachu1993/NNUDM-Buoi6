@@ -59,3 +59,7 @@ typings/
 
 # next.js build output
 .next
+
+# RSA keys - included for assignment submission
+# generateKeys.js - key generation script
+generateKeys.js

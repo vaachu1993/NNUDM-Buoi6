@@ -43,4 +43,25 @@ module.exports = {
         body('avatarUrl').optional().isArray().withMessage("hinh anh khong hop le"),
         body('avatarUrl.*').optional().isURL().withMessage("URL khong hop le")
     ],
+    ChangePasswordValidator: [
+        body('oldPassword')
+            .notEmpty().withMessage("oldPassword không được để trống"),
+        body('newPassword')
+            .notEmpty().withMessage("newPassword không được để trống")
+            .bail()
+            .isStrongPassword({
+                minLength: 8,
+                minLowercase: 1,
+                minNumbers: 1,
+                minSymbols: 1,
+                minUppercase: 1
+            }).withMessage("newPassword phải có ít nhất 8 ký tự, gồm: 1 chữ hoa, 1 chữ thường, 1 ký tự đặc biệt và 1 số")
+            .bail()
+            .custom((value, { req }) => {
+                if (value === req.body.oldPassword) {
+                    throw new Error("newPassword không được trùng với oldPassword");
+                }
+                return true;
+            })
+    ],
 }
